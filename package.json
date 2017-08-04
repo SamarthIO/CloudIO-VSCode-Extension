@@ -2,7 +2,7 @@
     "name": "cloudio",
     "displayName": "CloudIO",
     "description": "Develop IO Pages",
-    "version": "0.80.0",
+    "version": "0.83.0",
     "publisher": "cloudiotools",
     "engines": {
         "vscode": "^1.14.0"
