@@ -1,7 +1,7 @@
 var vscode = require('vscode');
-var createProject = require('./cloudioCreateProject.js');
-var commitChanges = require('./cloudioCommit.js');
-var syncFolder = require('./cloudioSync.js');
+var createProject = require('./src/cloudioCreateProject.js');
+var commitChanges = require('./src/cloudioCommit.js');
+var syncFolder = require('./src/cloudioSync.js');
 
 function activate(context) {
     vscode.workspace.onDidSaveTextDocument(listener = function (event) {
@@ -45,10 +45,12 @@ function activate(context) {
     var cacheLanguageD = vscode.languages.registerCompletionItemProvider('javascript', {
         provideCompletionItems() {
             var completionItem = [];
-            var attrs = ['get(key)', 'put(key, value)'];
-            attrs.forEach(function (v) {
-                completionItem.push(new vscode.CompletionItem(v, 2));
-            });
+            var attrs = ['get', 'put'];
+            var c1 = new vscode.CompletionItem('get', 2);
+            c1.documentation = "Get an value from saved in browser cache";
+            completionItem.push(c1);
+            var c2 = new vscode.CompletionItem('get', 2)
+            completionItem.push(c2);
             return completionItem;
         }
     }, 'Cache.');

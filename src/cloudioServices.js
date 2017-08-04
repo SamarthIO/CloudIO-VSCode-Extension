@@ -7,26 +7,32 @@ var SESSION_ID = undefined;
 
 class cloudioService {
     cloudioApiCall(url, data, callback) {
-        request({
-            url: url,
-            method: "POST",
-            headers: {
-                "content-type": "application/json"
-            },
-            json: true,
-            body: data
-        }, function (error, response, body) {
-            if (error) {
-                vscode.window.showErrorMessage(error.message);
-            } else {
-                if (response.statusCode !== 200) {
-                    vscode.window.showErrorMessage(response.statusMessage);
-                } else if (body.$error) {
-                    vscode.window.showErrorMessage(body.errorMessage);
-                } else {
-                    callback(body);
-                }
-            }
+        vscode.window.withProgress({ location: vscode.ProgressLocation.Window, title: 'Processing...' }, function (progress) {
+            return new Promise(function (resolve, reject) {
+                progress.report({ message: 'CloudIO' });
+                request({
+                    url: url,
+                    method: "POST",
+                    headers: {
+                        "content-type": "application/json"
+                    },
+                    json: true,
+                    body: data
+                }, function (error, response, body) {
+                    resolve();
+                    if (error) {
+                        vscode.window.showErrorMessage(error.message);
+                    } else {
+                        if (response.statusCode !== 200) {
+                            vscode.window.showErrorMessage(response.statusMessage);
+                        } else if (body.$error) {
+                            vscode.window.showErrorMessage(body.errorMessage);
+                        } else {
+                            callback(body);
+                        }
+                    }
+                });
+            });
         });
     }
     getSessionId(url, username, password, callback) {

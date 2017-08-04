@@ -9,4 +9,4 @@
 
 <h3 align="center">Develop IO Pages from VS Code.</h3>
 
-A VS Code extension to develop your CloudIO application's IO Pages. 
+A VS Code extension to develop your CloudIO application IO Pages. 

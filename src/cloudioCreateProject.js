@@ -5,7 +5,7 @@ var cs = require('./cloudioServices.js');
 var cloudioServices = cs.getServices();
 
 function createWorkspace(data) {
-    if (data.url.indexOf(data.url.length) !== '/') {
+    if (data.url[data.url.length-1] !== '/') {
         data.url += '/';
     }
     data.url += "api/";
