@@ -5,7 +5,7 @@ var cs = require('./cloudioServices.js');
 var cloudioServices = cs.getServices();
 
 function createWorkspace(data) {
-    if (data.url[data.url.length-1] !== '/') {
+    if (data.url[data.url.length - 1] !== '/') {
         data.url += '/';
     }
     data.url += "api/";
@@ -26,6 +26,14 @@ function createWorkspace(data) {
                 }
             });
             cloudioServices.createFile(JSON.stringify(data, null, 4), data.projectFolder, "project.json");
+            var vsCodeFolder = cloudioServices.createFolder(data.projectFolder, ".vscode");
+            var excluseFiles = {
+                "files.exclude": {
+                    "**/other.json": true,
+                    "project.json": true
+                }
+            }
+            cloudioServices.createFile(JSON.stringify(excluseFiles, null, 4), vsCodeFolder, "settings.json");
             cloudioServices.showInformationMessage("Project '" + projectName + "' is created successfully!");
             vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.parse(prjectFolder));
         });

@@ -14,7 +14,7 @@ class cloudioService {
                     url: url,
                     method: "POST",
                     headers: {
-                        "content-type": "application/json"
+                        "content-type": "application/json;charset=utf-8"
                     },
                     json: true,
                     body: data
@@ -24,7 +24,7 @@ class cloudioService {
                         vscode.window.showErrorMessage(error.message);
                     } else {
                         if (response.statusCode !== 200) {
-                            vscode.window.showErrorMessage(response.statusMessage);
+                            vscode.window.showErrorMessage(response.status + "  " + response.statusMessage);
                         } else if (body.$error) {
                             vscode.window.showErrorMessage(body.errorMessage);
                         } else {
@@ -56,6 +56,21 @@ class cloudioService {
             signIn();
         }
     }
+    getRoles(url, sessionId, callback) {
+        var cs = new cloudioService();
+        var obj = {
+            "sessionId": sessionId,
+            "offset": 0,
+            "limit": 2000,
+            "select": ["roleName", "roleUid"]
+        };
+        cs.cloudioApiCall(url + "RaRoles", obj, function (r) {
+            if (r.data && r.data.length > 0) {
+                callback(r.data);
+            }
+        });
+    }
+
     getPageMetaData(url, sessionId, pageId, callback) {
         var cs = new cloudioService();
         var obj = {
@@ -72,6 +87,34 @@ class cloudioService {
             if (r.data && r.data.length > 0) {
                 callback(r.data);
             }
+        });
+    }
+    createNewPage(url, sessionId, pageCode, roleUid, callback) {
+        var cs = new cloudioService();
+        var obj = {
+            "sessionId": sessionId,
+            "seqNo": 10,
+            "pageState": "app." + pageCode,
+            "pageName": pageCode,
+            "pageCode": pageCode,
+            "controllerName": pageCode + "Controller",
+            "abstract": "N",
+            "url": "/" + pageCode,
+            "startDate": (new Date()).toISOString(),
+            "templateHtml": "<div>Page from VS code</div>",
+            "controller": "io.controller(function($scope){\n\t//Code from VS Code\n});"
+        };
+        cs.cloudioApiCall(url + "IOPagesDev/insert", obj, function (r) {
+            callback(r);
+            var obj = {
+                "ioPageId": r.pageId,
+                "roleUid": roleUid,
+                "sessionId": sessionId,
+                "startDate": (new Date()).toISOString()
+            };
+            cs.cloudioApiCall(url + "IOAccess/insert", obj, function (r) {
+                //No need to do anything
+            });
         });
     }
     updatePage(url, obj, callback) {
@@ -106,7 +149,6 @@ class cloudioService {
         if (fs.existsSync(file)) {
             return fs.readFileSync(file).toString();
         }
-        //vscode.window.showErrorMessage("Error reading File: " + file);
         return null;
     }
     getBaseDetails(data, type) {
