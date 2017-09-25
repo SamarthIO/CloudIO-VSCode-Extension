@@ -28,7 +28,9 @@ class cloudioService {
                         } else if (body.$error) {
                             vscode.window.showErrorMessage(body.errorMessage);
                         } else {
-                            callback(body);
+                            if (callback && callback != null) {
+                                callback(body);
+                            }
                         }
                     }
                 });
@@ -36,7 +38,6 @@ class cloudioService {
         });
     }
     getSessionId(url, username, password, callback) {
-        var cs = new cloudioService();
         function signIn() {
             var obj = { "username": username, "password": password };
             cs.cloudioApiCall(url + "signin", obj, function (r) {
@@ -57,7 +58,6 @@ class cloudioService {
         }
     }
     getRoles(url, sessionId, callback) {
-        var cs = new cloudioService();
         var obj = {
             "sessionId": sessionId,
             "offset": 0,
@@ -71,8 +71,36 @@ class cloudioService {
         });
     }
 
+    getGWTTemplates(url, sessionId, requestDetails, callback) {
+        var obj = {
+            "sessionId": sessionId,
+            "offset": 0,
+            "limit": 2000,
+            "select": requestDetails.selects
+        };
+        cs.cloudioApiCall(url + requestDetails.datasource, obj, function (r) {
+            if (r.data && r.data.length > 0) {
+                callback(r.data);
+            }
+        });
+    }
+
+    getGWTSelectedRow(url, sessionId, requestDetails, callback) {
+        var obj = {
+            "sessionId": sessionId,
+            "offset": 0,
+            "limit": 1,
+            "whereClause": "#" + requestDetails.key + "# = ? ",
+            "whereClauseParams": [requestDetails.value]
+        };
+        cs.cloudioApiCall(url + requestDetails.datasource, obj, function (r) {
+            if (r.data && r.data.length > 0) {
+                callback(r.data[0]);
+            }
+        });
+    }
+
     getPageMetaData(url, sessionId, pageId, callback) {
-        var cs = new cloudioService();
         var obj = {
             "sessionId": sessionId,
             "offset": 0,
@@ -90,7 +118,6 @@ class cloudioService {
         });
     }
     createNewPage(url, sessionId, pageCode, roleUid, callback) {
-        var cs = new cloudioService();
         var obj = {
             "sessionId": sessionId,
             "seqNo": 10,
@@ -112,13 +139,13 @@ class cloudioService {
                 "sessionId": sessionId,
                 "startDate": (new Date()).toISOString()
             };
-            cs.cloudioApiCall(url + "IOAccess/insert", obj, function (r) {
-                //No need to do anything
-            });
+            cs.cloudioApiCall(url + "IOAccess/insert", obj, null);
         });
     }
+    updateGWTFile(details, projectDetails, result) {
+        cs.cloudioApiCall(projectDetails.url + details.datasource + "/update", result, null);
+    }
     updatePage(url, obj, callback) {
-        var cs = new cloudioService();
         cs.cloudioApiCall(url + "IOPagesDev/update", obj, function (r) {
             callback(r);
         });
@@ -137,6 +164,19 @@ class cloudioService {
         }
         return folder;
     }
+    removeFolder(folderPath) {
+        if (fs.existsSync(folderPath)) {
+            fs.readdirSync(folderPath).forEach(function (file, index) {
+                var curPath = path.join(folderPath, file);
+                if (fs.lstatSync(curPath).isDirectory()) {
+                    cs.removeFolder(curPath);
+                } else {
+                    fs.unlinkSync(curPath);
+                }
+            });
+            fs.rmdirSync(folderPath);
+        }
+    }
     createFile(content, folder, fileName) {
         var file = path.join(folder, fileName);
         fs.writeFile(file, content, 'utf8', function (err) {
@@ -150,6 +190,13 @@ class cloudioService {
             return fs.readFileSync(file).toString();
         }
         return null;
+    }
+    updateFile(file, content) {
+        fs.writeFile(file, content, 'utf8', function (err) {
+            if (err) {
+                vscode.window.showErrorMessage("Error updating File: " + err);
+            }
+        });
     }
     getBaseDetails(data, type) {
         var obj = {}
@@ -169,7 +216,6 @@ class cloudioService {
         return obj;
     }
     createPageFolder(value, folder) {
-        var cs = new cloudioService();
         if (value.controller) {
             cs.createFile(value.controller, folder, "controller.js");
         }
@@ -184,6 +230,33 @@ class cloudioService {
         var otherContent = cs.getBaseDetails(value, 'H');
         cs.createFile(JSON.stringify(otherContent, null, 4), folder, "other.json");
     }
+    getWorkspace(param) {
+        var fsPath = param.replace(param.charAt(0), param.charAt(0).toUpperCase());
+        var filePath = path.normalize(fsPath);
+        var fileName = path.basename(filePath);
+        var folder = path.dirname(filePath);
+        return path.dirname(folder);
+    }
+    getProjectDetails(workspace) {
+        var projectFile = path.resolve(workspace, "project.json");
+        var content = cs.readFile(projectFile);
+        if (content != null) {
+            return JSON.parse(content);
+        }
+        return null;
+    }
+    isProjectFile(fileName, workspace) {
+        return fileName.indexOf(workspace) !== -1;
+    }
+    isGWTFile(fileName) {
+        var names = ["$HTML_Templates", "$Java_Snippets", "$HTML_Requests", "$Datasources"];
+        for (var i = 0; i < 4; i++) {
+            if (fileName.indexOf(names[i]) !== -1) {
+                return true;
+            }
+        }
+        return false;
+    }
     showInformationMessage(val) {
         vscode.window.showInformationMessage(val);
     }
@@ -191,6 +264,7 @@ class cloudioService {
         vscode.window.showErrorMessage(error);
     }
 }
+var cs = new cloudioService();
 this.getServices = function () {
-    return new cloudioService;
+    return cs;
 }

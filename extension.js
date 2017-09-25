@@ -6,35 +6,56 @@ var syncFolder = require('./src/cloudioSync.js');
 var createNewPage = require('./src/cloudioNewPage.js');
 var cloudioServices = require('./src/cloudioServices');
 var completionItems = require('./src/cloudioCompletionItems.js');
+var gwtObjects = require('./src/cloudioGWTServices.js');
+
 function activate(context) {
+    var cs = cloudioServices.getServices();
+    var workspace = vscode.workspace.rootPath;
     vscode.workspace.onDidSaveTextDocument(listener = function (event) {
-        commitChanges.commit(event.fileName);
+        var fileName = event.fileName;
+        if (cs.isProjectFile(fileName, workspace)) {
+            if (cs.isGWTFile(fileName)) {
+                gwtObjects.save(fileName, workspace);
+            } else {
+                commitChanges.commit(fileName);
+            }
+        }
     }, null, context.subscriptions);
     vscode.workspace.onDidOpenTextDocument(listener = function (event) {
-        syncFolder.sync(event.fileName);
+        var fileName = event.fileName;
+        if (cs.isProjectFile(fileName, workspace)) {
+            if (cs.isGWTFile(fileName)) {
+                gwtObjects.sync(fileName, workspace);
+            } else {
+                commitChanges.commit(fileName);
+            }
+        }
     }, null, context.subscriptions);
     completionItems.addCompleteRegisters();
     var disposable = vscode.commands.registerCommand('extension.cloudio', function (param) {
-        var workspace = vscode.workspace.rootPath;
         if (!workspace) {
             createProject.getProject();
             return;
         }
         var file = path.join(workspace, "project.json");
-        var cs = cloudioServices.getServices();
         var content = cs.readFile(file);
         if (content && content != null) {
             try {
                 var obj = JSON.parse(content);
                 if (obj.projectFolder === workspace) {
-                    vscode.window.showQuickPick(["New Page", "Sync Workspace", "New Connection"], {
+                    var arr = ["New Page", "Sync Current Connection", "New Connection", "Get Html Template", "Get Html Request", "Get Java Snippets", "Get Datasource Code"];
+                    vscode.window.showQuickPick(arr, {
                         placeHolder: "Please select...",
-                        ignoreFocusOut: true
+                        ignoreFocusOut: false
                     }).then(function (selected) {
                         if (selected === "New Page") {
                             createNewPage.newPage(workspace);
-                        } else {
+                        } else if (selected === "Sync Workspace") {
+                            syncFolder.syncAll(param);
+                        } else if (selected === "New Connection") {
                             createProject.getProject();
+                        } else if (selected) {
+                            gwtObjects.getSnippets(workspace, selected);
                         }
                     });
                 } else {
@@ -48,7 +69,7 @@ function activate(context) {
         }
     });
     context.subscriptions.push(disposable);
-    
+
 }
 
 exports.activate = activate;

@@ -5,10 +5,6 @@ var cs = require('./cloudioServices.js');
 var cloudioServices = cs.getServices();
 
 function createWorkspace(data) {
-    if (data.url[data.url.length - 1] !== '/') {
-        data.url += '/';
-    }
-    data.url += "api/";
     cloudioServices.getSessionId(data.url, data.username, data.password, function (sessionId) {
         cloudioServices.getPageMetaData(data.url, sessionId, null, function (metaData) {
             var projectName = data.projectName;
@@ -30,7 +26,8 @@ function createWorkspace(data) {
             var excluseFiles = {
                 "files.exclude": {
                     "**/other.json": true,
-                    "project.json": true
+                    "project.json": true,
+                    "**/.metaData.json": true
                 }
             }
             cloudioServices.createFile(JSON.stringify(excluseFiles, null, 4), vsCodeFolder, "settings.json");
@@ -38,6 +35,10 @@ function createWorkspace(data) {
             vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.parse(prjectFolder));
         });
     });
+}
+
+this.syncProject = function (data) {
+    createWorkspace(data);
 }
 
 function getValuesFromInputbox(param, callback) {
@@ -55,11 +56,12 @@ function getValuesFromInputbox(param, callback) {
         }
     });
 }
+
 this.getProject = function () {
     var projectDetails = {};
     var i = 1;
     var params = [
-        { key: "projectName", options: { placeHolder: "Enter Project Name", value: "Untitled" } },
+        { key: "projectName", options: { placeHolder: "Enter Connection Name", value: "Untitled" } },
         { key: "workspace", options: { placeHolder: "Enter Workspace Location", value: os.homedir() } },
         { key: "url", options: { placeHolder: "Enter Application Url", value: "http://192.168.10.112:3480" } },
         { key: "username", options: { placeHolder: "Enter Username", value: "admin" } },
@@ -68,6 +70,10 @@ this.getProject = function () {
     function callback(key, val) {
         projectDetails[key] = val;
         if (i === params.length) {
+            if (projectDetails.url[projectDetails.url.length - 1] !== '/') {
+                projectDetails.url += '/';
+            }
+            projectDetails.url += "api/";
             createWorkspace(projectDetails);
             return;
         }

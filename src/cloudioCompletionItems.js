@@ -1,4 +1,9 @@
 var vscode = require('vscode');
+var fs = require('fs');
+var dbMethods = require('./DBScriptsCompletionMethod.json');
+var cloudioServices = require('./cloudioServices');
+
+var cs = cloudioServices.getServices();
 
 function getLoggerCompletionList() {
     var loggerCompletionList = [];
@@ -48,7 +53,7 @@ function getCacheCompletionList() {
     return cacheCompletionList;
 }
 
-function getSessionCompletionList(){
+function getSessionCompletionList() {
     var sessionCompletionList = [];
 
     var getSession = new vscode.CompletionItem('get()', vscode.CompletionItemKind.Method);
@@ -88,6 +93,27 @@ this.addCompleteRegisters = function () {
                     return getCacheCompletionList();
                 } else if (text.startsWith('Session.')) {
                     return getSessionCompletionList();
+                } else {
+                    return [];
+                }
+            }
+            return [];
+        }
+    }, ['.']);
+    vscode.languages.registerCompletionItemProvider({ language: 'java', pattern: '**/*.java' }, {
+        provideCompletionItems(model, position) {
+            var range = new vscode.Range(position.line, 0, position.line, position.character);
+            var textUntilPosition = model.getText(range);
+            if (textUntilPosition && textUntilPosition.length > 0 && textUntilPosition.trim().length > 0) {
+                var text = textUntilPosition.trim();
+                if (text.startsWith('db.')) {
+                    var completionList = [];
+                    dbMethods.forEach(function (v) {
+                        var temp = new vscode.CompletionItem(v.m, vscode.CompletionItemKind.Method);
+                        temp.documentation = v.d;
+                        completionList.push(temp);
+                    });
+                    return completionList;
                 } else {
                     return [];
                 }

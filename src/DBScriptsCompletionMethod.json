@@ -1,0 +1,292 @@
+[
+    { "m": "getSessionData(key)", "d": "Object getSessionData(String key); "
+    },
+    { "m": "setSessionData(key, value)", "d": "void setSessionData(String key, Object value);"
+    },
+    { "m": "cacheGetAttributeByNameValues(ds, attr, ...nameValues)", "d": "Object cacheGetAttributeByNameValues(String ds, String attr, Object... nameValues) throws SQLException, RAException; "
+    },
+    { "m": "cacheGetObjectByNameValues(ds, ...nameValues)", "d": "RPCModelData cacheGetObjectByNameValues(String ds, Object... nameValues) throws SQLException, RAException; "
+    },
+    { "m": "evaluateSelectSQL(sql)", "d": "Object evaluateSelectSQL(String sql) throws SQLException; "
+    },
+    { "m": "evaluateSelectSQL(sql, isApps)", "d": "Object evaluateSelectSQL(String sql, boolean isApps) throws SQLException; "
+    },
+    { "m": "authenticateUserForCustomLogin(request, response, userName, email, displayName)", "d": "UserSession authenticateUserForCustomLogin(HttpServletRequest request, HttpServletResponse response, String userName, String email, String displayName) throws RAException, SQLException; "
+    },
+    { "m": "getData(key)", "d": "Object getData(String key); "
+    },
+    { "m": "getDBNextVal(sequenceName)", "d": "Double getDBNextVal(String sequenceName); "
+    },
+    { "m": "getLink(embeded, linkName, pageCode, otherParams)", "d": "String getLink(boolean embeded, String linkName, String pageCode, String otherParams); "
+    },
+    { "m": "getLink(embeded, linkName, pageCode, ds, attr, condition, value)", "d": "String getLink(boolean embeded, String linkName, String pageCode, String ds, String attr, String condition, Object value); "
+    },
+    { "m": "getLink(embeded, linkName, pageCode, ds, attr, condition, value, attr2, cond2, value2)", "d": "String getLink(boolean embeded, String linkName, String pageCode, String ds, String attr, String cond, Object value, String attr2, String cond2, Object value2); "
+    },
+    { "m": "getLink(linkName, pageCode, otherParams)", "d": "String getLink(String linkName, String pageCode, String otherParams); "
+    },
+    { "m": "getLink(linkName, pageCode, ds, attr, cond, value)", "d": "String getLink(String linkName, String pageCode, String ds, String attr, String cond, Object value); "
+    },
+    { "m": "getLink(linkName, pageCode, ds, attr, cond, value, attr2, cond2, value2)", "d": "String getLink(String linkName, String pageCode, String ds, String attr, String cond, Object value, String attr2, String cond2, Object value2); "
+    },
+    { "m": "getNextVal(sequenceName)", "d": "Double getNextVal(String sequenceName); "
+    },
+    { "m": "getObjectByNameValues(ds, map, offset)", "d": "RPCModelData getObjectByNameValues(String ds, Map<String, Object> map, int offset) throws SQLException, RAException; "
+    },
+    { "m": "getObjectByNameValues(ds, ...nameValues)", "d": "RPCModelData getObjectByNameValues(String ds, Object... nameValues) throws SQLException, RAException; "
+    },
+    { "m": "getObjectByPKValues(ds, ...params)", "d": "RPCModelData getObjectByPKValues(String ds, Object... params) throws SQLException, RAException; "
+    },
+    { "m": "getObjectsByNameValues(ds, offset, ...nameValues)", "d": "List<RPCModelData> getObjectsByNameValues(String ds, int offset, Object... nameValues) throws SQLException, RAException; "
+    },
+    { "m": "getObjectsByNameValues(ds, map, offset)", "d": "List<RPCModelData> getObjectsByNameValues(String ds, Map<String, Object> map, int offset) throws SQLException, RAException; "
+    },
+    { "m": "getObjectsByNameValues(ds, map, offset, limit)", "d": "List<RPCModelData> getObjectsByNameValues(String ds, Map<String, Object> map, int offset, int limit) throws SQLException, RAException; "
+    },
+    { "m": "getRoleEmails(roleName)", "d": "String getRoleEmails(String roleName); "
+    },
+    { "m": "getSessionValue(fieldName)", "d": "Object getSessionValue(String fieldName); "
+    },
+    { "m": "getURL()", "d": "String getURL(); "
+    },
+    { "m": "getURL(embeded, pageCode, otherParams)", "d": "String getURL(boolean embeded, String pageCode, String otherParams); "
+    },
+    { "m": "getURL(pageCode, otherParams)", "d": "String getURL(String pageCode, String otherParams); "
+    },
+    { "m": "getUserEmail(userID)", "d": "String getUserEmail(Double userID) throws SQLException; "
+    },
+    { "m": "isObjectExists(ds, map)", "d": "boolean isObjectExists(String ds, Map<String, Object> map) throws SQLException, RAException; "
+    },
+    { "m": "postObjectsToDB(ds, data)", "d": "List<RPCModelData> postObjectsToDB(String ds, List<RPCModelData> data) throws SQLException, RAException; "
+    },
+    { "m": "postObjectToDB(ds, data)", "d": "RPCModelData postObjectToDB(String ds, RPCModelData data) throws SQLException, RAException; "
+    },
+    { "m": "setData(key, value)", "d": "void setData(String key, Object value); "
+    },
+    { "m": "trunc(date)", "d": "Date trunc(Date date); "
+    },
+    { "m": "publishSystemNotification(subject, body, roleUids, userIds)", "d": "void publishSystemNotification(String subject, String body, String roleUids, String userIds) throws RAException, SQLException; "
+    },
+    { "m": "publishUserNotification(subject, body, roleUids, userIds)", "d": "void publishUserNotification(String subject, String body, String roleUids, String userIds) throws RAException, SQLException; "
+    },
+    { "m": "publishAndGetUserNotification(subject, body, roleUids, userIds)", "d": "RPCModelData publishAndGetUserNotification(String subject, String body, String roleUids, String userIds) throws RAException, SQLException; "
+    },
+    { "m": "queueEmails(es, eb)", "d": "void queueEmails(String es, String eb) throws RAException; "
+    },
+    { "m": "sendEmail(toEmails, ccEmails, es, eb, custTemplate)", "d": "void sendEmail(String toEmails, String ccEmails, String es, String eb, String custTemplate) throws RAException;"
+    },
+    { "m": "sendEmail(toEmails, ccEmails, es, eb, startDate, custTemplate)", "d": "void sendEmail(String toEmails, String ccEmails, String es, String eb, Date startDate, String custTemplate) throws RAException; "
+    },
+    { "m": "sendEmail(toEmails, ccEmails, bccEmails, es, eb, custTemplate)", "d": "void sendEmail(String toEmails, String ccEmails, String bccEmails, String es, String eb, String custTemplate) throws RAException; "
+    },
+    { "m": "sendEmail(toEmails, ccEmails, bccEmails, es, eb, custTemplate, attachmentId)", "d": "void sendEmail(String toEmails, String ccEmails, String bccEmails, String es, String eb, String custTemplate, Long attachmentId) throws RAException; "
+    },
+    { "m": "sendEmail(toEmails, ccEmails, bccEmails, es, eb, startDate, custTemplate)", "d": "void sendEmail(String toEmails, String ccEmails, String bccEmails, String es, String eb, Date startDate, String custTemplate) throws RAException; "
+    },
+    { "m": "executeQuery(sql, params)", "d": "List<RPCModelData> executeQuery(String sql, Object[] params) throws SQLException; "
+    },
+    { "m": "getObjects(ds, whereClause, params)", "d": "List<RPCModelData> getObjects(String ds, String whereClause, List params) throws SQLException, RAException; "
+    },
+    { "m": "getChangesTextForStreamBody(attributesList, data, dbRow)", "d": "String getChangesTextForStreamBody(String attributesList, RPCModelData data, RPCModelData dbRow); "
+    },
+    { "m": "getChangesTextForStreamBody(data)", "d": "String getChangesTextForStreamBody(RPCModelData data); "
+    },
+    { "m": "getDiffHtml(data)", "d": "String getDiffHtml(RPCModelData data); "
+    },
+    { "m": "getUserEmailAddress(userId)", "d": "String getUserEmailAddress(Double userId) throws SQLException; "
+    },
+    { "m": "getUserUserName(userId)", "d": "String getUserUserName(Double userId) throws SQLException; "
+    },
+    { "m": "getUserDisplayName(userId)", "d": "String getUserDisplayName(Double userId) throws SQLException; "
+    },
+    { "m": "dbItemToClientItem(row)", "d": "Map<String, Object> dbItemToClientItem(RPCModelData row); "
+    },
+    { "m": "cleanHtml(html)", "d": "String cleanHtml(String html); "
+    },
+    { "m": "getDiffHtml(oldValue, newValue)", "d": "String getDiffHtml(String oldValue, String newValue); "
+    },
+    { "m": "getDiffHtml(oldValue, newValue, maxLength)", "d": "String getDiffHtml(String oldValue, String newValue, int maxLength); "
+    },
+    { "m": "performFTPActions(hostName, uName, pwd, fileId, destFolder, action)", "d": "void performFTPActions(String hostName, String uName, String pwd, Double fileId, String destFolder, String action); "
+    },
+    { "m": "createUser(userName, email, DisplayName, String managerName)", "d": "RPCModelData createUser(String userName, String email, String DisplayName, String managerName) throws SQLException; "
+    },
+    { "m": "createUser(userName, email, DisplayName)", "d": "RPCModelData createUser(String userName, String email, String DisplayName) throws SQLException; "
+    },
+    { "m": "assignRoles(userId, roleCodes)", "d": "List<RPCModelData> assignRoles(Double userId, String[] roleCodes) throws RAException, SQLException; "
+    },
+    { "m": "assignRoles(userName, roleCodes)", "d": "List<RPCModelData> assignRoles(String userName, String[] roleCodes) throws SQLException; "
+    },
+    { "m": "confirmationMessageBox(confirmationMessage, confirmationOptions, confirmationSequence,  confirmationToken, cancelButtonText)", "d": "void confirmationMessageBox(String confirmationMessage, String confirmationOptions, double confirmationSequence, String confirmationToken, String cancelButtonText) throws RAConfirmationException; "
+    },
+    { "m": "getOrgId()", "d": "Double getOrgId(); "
+    },
+    { "m": "getUserId()", "d": "Double getUserId(); "
+    },
+    { "m": "getUserName()", "d": "String getUserName(); "
+    },
+    { "m": "executeQueryObject(sql, params)", "d": "Object executeQueryObject(String sql, Object[] params) throws SQLException; "
+    },
+    { "m": "performFTPActions(hostName, uName, pwd, fileName, destFolder, action)", "d": "List<String> performFTPActions(String hostName, String uName, String pwd, String fileName, String destFolder, String action); "
+    },
+    { "m": "updateProfile(profileCode, orgId)", "d": "void updateProfile(String profileCode, Double orgId); "
+    },
+    { "m": "reloadProfiles()", "d": "void reloadProfiles(); "
+    },
+    { "m": "createUserWithRoles(userName, email, displayName, managerName, roleCodes)", "d": "RPCModelData createUserWithRoles(String userName, String email, String displayName, String managerName, String[] roleCodes) throws SQLException; "
+    },
+    { "m": "getRAObject(ds)", "d": "RAObject getRAObject(String ds) throws RAException, SQLException; "
+    },
+    { "m": "getUserSession()", "d": "UserSession getUserSession(); "
+    },
+    { "m": "getApplicationConnection()", "d": "Connection getApplicationConnection(); "
+    },
+    { "m": "getMetaDataConnection()", "d": "Connection getMetaDataConnection(); "
+    },
+    { "m": "executeQuery(sql, params, isApps)", "d": "List<RPCModelData> executeQuery(String sql, Object[] params, boolean isApps) throws SQLException; "
+    },
+    { "m": "sendEmail(toEmails, ccEmails, bccEmails, es, eb, custTemplate, attachments)", "d": "void sendEmail(String toEmails, String ccEmails, String bccEmails, String es, String eb, String custTemplate, List<Long> attachments) throws RAException; "
+    },
+    { "m": "storeFile(ds, is, fileName, contentType, size)", "d": "long storeFile(String ds, InputStream is, String fileName, String contentType, int size) throws RAException, SQLException, IOException; "
+    },
+    { "m": "storeFile(ds, is, fileName, contentType, size, type)", "d": "long storeFile(String ds, InputStream is, String fileName, String contentType, int size, String type) throws RAException, SQLException, IOException; "
+    },
+    { "m": "getObjects(datasource, data)", "d": "List<RPCModelData> getObjects(String ds, RPCModelData data) throws SQLException, RAException; "
+    },
+    { "m": "resetPassword(userName, emailAddress, sendEmailAndNotification)", "d": "String resetPassword(String userName, String emailAddress, boolean sendEmailAndNotification) throws RAException, SQLException; "
+    },
+    { "m": "getCurrentRAObject()", "d": "RAObject getCurrentRAObject(); "
+    },
+    { "m": "isDebug()", "d": "boolean isDebug(); "
+    },
+    { "m": "getFromKey()", "d": "String getFromKey(); "
+    },
+    { "m": "executeUpdate(sql, params)", "d": "int executeUpdate(String sql, Object[] params) throws SQLException; "
+    },
+    { "m": "executeQueryDouble(sql, params)", "d": "Double executeQueryDouble(String sql, Object[] params) throws SQLException; "
+    },
+    { "m": "evaluateExpression(formula, data, params)", "d": "String evaluateExpression(String formula, RPCModelData data, List<Object> params) throws SQLException; "
+    },
+    { "m": "evaluateExpression(formula, data)", "d": "String evaluateExpression(String formula, RPCModelData data) throws SQLException; "
+    },
+    { "m": "getHttpServletRequest()", "d": "HttpServletRequest getHttpServletRequest(); "
+    },
+    { "m": "initUserSession(key, secret)", "d": "void initUserSession(String key, String secret) throws Exception; "
+    },
+    { "m": "populateDFFDisplayValues(data, dffcontext, descriptiveFlexfieldName, applicationId)", "d": "void populateDFFDisplayValues(RPCModelData data, String dffcontext, String descriptiveFlexfieldName, Double applicationId); "
+    },
+    { "m": "convertDFFValuesToString(data, dffContext, descriptiveFlexfieldName, applicationId)", "d": "void convertDFFValuesToString(RPCModelData data, String dffContext, String descriptiveFlexfieldName, Double applicationId); "
+    },
+    { "m": "convertDFFStringToValues(ata, dffContext, descriptiveFlexfieldName, applicationId)", "d": "void convertDFFStringToValues(RPCModelData data, String dffContext, String descriptiveFlexfieldName, Double applicationId); "
+    },
+    { "m": "getDiffHtml(data1, dbData1)", "d": "String getDiffHtml(RPCModelData data1, RPCModelData dbData1); "
+    },
+    { "m": "generateStreamXLSSheet(ds, whereClause, params, sheetName, workbook, columns, customHandlerClassName, javaSnippetName)", "d": "void generateStreamXLSSheet(String ds, String whereClause, List params, String sheetName, SXSSFWorkbook workbook, List<RPCModelData> columns, String customHandlerClassName, String javaSnippetName) throws RAException, SQLException, IOException; "
+    },
+    { "m": "generateStreamXLSSheet(ds, config, sheetName, workbook, columns, customHandlerClassName, javaSnippetName)", "d": "void generateStreamXLSSheet(String ds, RPCModelData config, String sheetName, SXSSFWorkbook workbook, List<RPCModelData> columns, String customHandlerClassName, String javaSnippetName) throws RAException, SQLException, IOException; "
+    },
+    { "m": "generateStreamXLSSheet(ds, config, sheetName, workbook, customHandlerClassName, javaSnippetName, pageCode, panelData)", "d": "void generateStreamXLSSheet(String ds, RPCModelData config, String sheetName, SXSSFWorkbook workbook, String customHandlerClassName, String javaSnippetName, String pageCode, PanelData panelData) throws RAException, SQLException, IOException; "
+    },
+    { "m": "getItemMetaData(pageCode, itemId)", "d": "ItemData getItemMetaData(String pageCode, String itemId); "
+    },
+    { "m": "generateStreamXLSSheet(ds, whereClause, params, sheetName, workbook, customHandlerClassName, javaSnippetName, pageCode, panelData)", "d": "void generateStreamXLSSheet(String ds, String whereClause, List params, String sheetName, SXSSFWorkbook workbook, String customHandlerClassName, String javaSnippetName, String pageCode, PanelData panelData) throws RAException, SQLException, IOException; "
+    },
+    { "m": "generateStreamXLSSheet(ds, whereClause, params, sheetName, workbook, customHandlerClassName, javaSnippetName, pageCode, itemId)", "d": "void generateStreamXLSSheet(String ds, String whereClause, List params, String sheetName, SXSSFWorkbook workbook, String customHandlerClassName, String javaSnippetName, String pageCode, String itemId) throws RAException, SQLException, IOException; "
+    },
+    { "m": "generateStreamXLSSheet(ds, config, sheetName, workbook, customHandlerClassName, javaSnippetName, pageCode, itemId)", "d": "void generateStreamXLSSheet(String ds, RPCModelData config, String sheetName, SXSSFWorkbook workbook, String customHandlerClassName, String javaSnippetName, String pageCode, String itemId) throws RAException, SQLException, IOException; "
+    },
+    { "m": "downloadSelectedFilesAsZip(fileIds, outputStream)", "d": "RPCModelData downloadSelectedFilesAsZip(List<Long> fileIds, OutputStream outputStream) throws Exception; "
+    },
+    { "m": "downloadGDriveFilesAsZip(fileIds, outputStream)", "d": "RPCModelData downloadGDriveFilesAsZip(List<String> fileIds, OutputStream outputStream) throws Exception; "
+    },
+    { "m": "getProfile(profileCode)", "d": "String getProfile(String profileCode); "
+    },
+    { "m": "log(message)", "d": "void log(String message) throws RAException; "
+    },
+    { "m": "getProfile(userId, profileCode)", "d": "String getProfile(Double userId, String profileCode); "
+    },
+    { "m": "getUserId(userName)", "d": "Double getUserId(String userName) throws SQLException; "
+    },
+    { "m": "sendEmail(toEmails, ccEmails, bccEmails, es, eb, custTemplate, attachments, fromName, fromEmail)", "d": "void sendEmail(String toEmails, String ccEmails, String bccEmails, String es, String eb, String custTemplate, List<Long> attachments, String fromName, String fromEmail) throws RAException; "
+    },
+    { "m": "removeSessionData(key)", "d": "Object removeSessionData(String key); "
+    },
+    { "m": "consoleLog(msg)", "d": "void consoleLog(String msg); "
+    },
+    { "m": "isConsoleLoggerEnable()", "d": "boolean isConsoleLoggerEnable(); "
+    },
+    { "m": "setConsoleLoggerEnabled(consoleLogger)", "d": "void setConsoleLoggerEnabled(boolean consoleLogger); "
+    },
+    { "m": "endConsoleLog()", "d": "void endConsoleLog(); "
+    },
+    { "m": "initConsoleLogger(consoleLogger)", "d": "void initConsoleLogger(List<String> consoleLogger); "
+    },
+    { "m": "clearConsoleLog()", "d": "void clearConsoleLog(); "
+    },
+    { "m": "getConsoleLogAsString()", "d": "String getConsoleLogAsString(); "
+    },
+    { "m": "setData(data)", "d": "void setData(RPCModelData data); "
+    },
+    { "m": "setDbdata(dbRow)", "d": "void setDbdata(RPCModelData dbRow); "
+    },
+    { "m": "executeUpdateSql(conn, sql, params)", "d": "int executeUpdateSql(Connection conn, String sql, Object[] params) throws SQLException; "
+    },
+    { "m": "buildPivotQueries(request, response)", "d": "RPCModelData buildPivotQueries(HttpServletRequest request, HttpServletResponse response) throws Exception; "
+    },
+    { "m": "buildPivotData(request, response, data)", "d": "void buildPivotData(HttpServletRequest request, HttpServletResponse response, RPCModelData data) throws Exception; "
+    },
+    { "m": "generateStreamXLSSheet(ds, config, sheetName, workbook, customHandlerClassName, javaSnippetName, pageCode, itemId, showHeader)", "d": "void generateStreamXLSSheet(String ds, RPCModelData config, String sheetName, SXSSFWorkbook workbook, String customHandlerClassName, String javaSnippetName, String pageCode, String itemId, boolean showHeader) throws RAException, SQLException, IOException; "
+    },
+    { "m": "generateStreamXLSSheet(ds, config, sheetName, workbook, customHandlerClassName, javaSnippetName, pageCode, panelData, showHeader)", "d": "void generateStreamXLSSheet(String ds, RPCModelData config, String sheetName, SXSSFWorkbook workbook, String customHandlerClassName, String javaSnippetName, String pageCode, PanelData panelData, boolean showHeader) throws RAException, SQLException, IOException; "
+    },
+    { "m": "getObjects(ds, whereClause, params, rest)", "d": "List<RPCModelData> getObjects(String ds, String whereClause, List params, boolean rest) throws SQLException, RAException; "
+    },
+    { "m": "getScheduledJavaSnippetCCList()", "d": "String getScheduledJavaSnippetCCList(); "
+    },
+    { "m": "setScheduledJavaSnippetCCList(ccList)", "d": "void setScheduledJavaSnippetCCList(String ccList); "
+    },
+    { "m": "getScheduledJavaSnippetBCCList()", "d": "String getScheduledJavaSnippetBCCList(); "
+    },
+    { "m": "setScheduledJavaSnippetBCCList(ccList)", "d": "void setScheduledJavaSnippetBCCList(String ccList); "
+    },
+    { "m": "getScheduledJavaSnippetToList()", "d": "String getScheduledJavaSnippetToList(); "
+    },
+    { "m": "setScheduledJavaSnippetToList(toList)", "d": "void setScheduledJavaSnippetToList(String toList); "
+    },
+    { "m": "getNextUniqueValue(tableName, columnName, startValue, maxLength)", "d": "String getNextUniqueValue(String tableName, String columnName, String startValue, int maxLength) throws SQLException; "
+    },
+    { "m": "getNextUniqueValue(tableName, columnName, startValue, maxLength, orgLevel, isApps)", "d": "String getNextUniqueValue(String tableName, String columnName, String startValue, int maxLength, boolean orgLevel, boolean isApps) throws SQLException; "
+    },
+    { "m": "getNextUniqueValue(tableName, columnName, whereClause, params, startValue, maxLength, orgLevel, isApps)", "d": "String getNextUniqueValue(String tableName, String columnName, String whereClause, Object[] params, String startValue, int maxLength, boolean orgLevel, boolean isApps) throws SQLException; "
+    },
+    { "m": "submitTimelineInsights(objectType, objectValue, insightAction, value)", "d": "void submitTimelineInsights(String objectType, String objectValue, String insightAction, int value); "
+    },
+    { "m": "submitInsights(objectType, objectValue, insightAction, insightType, insightName, value)", "d": "void submitInsights(String objectType, String objectValue, String insightAction, String insightType, String insightName, int value); "
+    },
+    { "m": "getADGroups()", "d": "List<RPCModelData> getADGroups(); "
+    },
+    { "m": "getUsersPerADGroup(userDn)", "d": "List<RPCModelData> getUsersPerADGroup(String userDn) throws RAException; "
+    },
+    { "m": "syncADRole(roleCode, adGroupCode, roleUid)", "d": "void syncADRole(String roleCode, String adGroupCode, String roleUid) throws RAException; "
+    },
+    { "m": "setMonitorRequest(monitorRequest)", "d": "void setMonitorRequest(MonitorRequest monitorRequest); "
+    },
+    { "m": "getMonitorRequest()", "d": "MonitorRequest getMonitorRequest(); "
+    },
+    { "m": "postToSlackIfEnabled(text, channel, userName)", "d": "void postToSlackIfEnabled(String text, String channel, String userName); "
+    },
+    { "m": "postToSlackIfEnabled(text)", "d": "void postToSlackIfEnabled(String text); "
+    },
+    { "m": "runParallelJobs(list, createNewApplicationConnection)", "d": "void runParallelJobs(ArrayList<ParallelJob> list, boolean createNewApplicationConnection) throws SQLException, InterruptedException; "
+    },
+    { "m": "hasRole(userId, roleCode)", "d": "boolean hasRole(Double userId, String roleCode) throws SQLException; "
+    },
+    { "m": "hasRole(roleCode)", "d": "boolean hasRole(String roleCode) throws SQLException; "
+    },
+    { "m": "setProfileOrgValue(orgId, code, value)", "d": "void setProfileOrgValue(Double orgId, String code, String value); "
+    },
+    { "m": "isTerminated()", "d": "boolean isTerminated(); "
+    },
+    { "m": "executeQuery(connectionCode, sql, params)", "d": "List<RPCModelData> executeQuery(String connectionCode, String sql, Object[] params) throws SQLException; "
+    }
+]
