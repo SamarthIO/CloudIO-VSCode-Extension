@@ -11,23 +11,23 @@ var gwtObjects = require('./src/cloudioGWTServices.js');
 function activate(context) {
     var cs = cloudioServices.getServices();
     var workspace = vscode.workspace.rootPath;
-    vscode.workspace.onDidSaveTextDocument(listener = function (event) {
+    vscode.workspace.onDidSaveTextDocument(function (event) {
         var fileName = event.fileName;
         if (cs.isProjectFile(fileName, workspace)) {
             if (cs.isGWTFile(fileName)) {
                 gwtObjects.save(fileName, workspace);
             } else {
-                commitChanges.commit(fileName);
+                commitChanges.commit(fileName, workspace);
             }
         }
     }, null, context.subscriptions);
-    vscode.workspace.onDidOpenTextDocument(listener = function (event) {
+    vscode.workspace.onDidOpenTextDocument(function (event) {
         var fileName = event.fileName;
         if (cs.isProjectFile(fileName, workspace)) {
             if (cs.isGWTFile(fileName)) {
                 gwtObjects.sync(fileName, workspace);
             } else {
-                commitChanges.commit(fileName);
+                syncFolder.sync(fileName, workspace);
             }
         }
     }, null, context.subscriptions);
@@ -43,7 +43,7 @@ function activate(context) {
             try {
                 var obj = JSON.parse(content);
                 if (obj.projectFolder === workspace) {
-                    var arr = ["New Page", "Sync Current Connection", "New Connection", "Get Html Template", "Get Html Request", "Get Java Snippets", "Get Datasource Code"];
+                    var arr = ["New Page", "Sync Current Connection", "New Connection", "Html Template", "Html Request", "Java Snippets", "Datasource Code"];
                     vscode.window.showQuickPick(arr, {
                         placeHolder: "Please select...",
                         ignoreFocusOut: false
@@ -51,7 +51,7 @@ function activate(context) {
                         if (selected === "New Page") {
                             createNewPage.newPage(workspace);
                         } else if (selected === "Sync Workspace") {
-                            syncFolder.syncAll(param);
+                            syncFolder.syncAll(workspace);
                         } else if (selected === "New Connection") {
                             createProject.getProject();
                         } else if (selected) {
@@ -69,7 +69,6 @@ function activate(context) {
         }
     });
     context.subscriptions.push(disposable);
-
 }
 
 exports.activate = activate;

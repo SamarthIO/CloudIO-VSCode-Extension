@@ -4,10 +4,10 @@ var path = require('path');
 var cs = cloudioServices.getServices();
 
 var bindings = {
-    "Get Html Template": { datasource: "RAHTMLTemplates", selects: ["templateCode", "templateUid"], name: "$HTML_Templates", content: "templateHtml", extension: "html", code: "HT" },
-    "Get Html Request": { datasource: "RAHTMLRequests", selects: ["uri", "requestUid"], name: "$HTML_Requests", content: "script", extension: "java", code: "HR" },
-    "Get Java Snippets": { datasource: "RaJavaSnippets", selects: ["name", "snippetUid"], name: "$Java_Snippets", content: "script", extension: "java", code: "JS" },
-    "Get Datasource Code": { datasource: "RaObjects", selects: ["objectName", "objectUid"], name: "$Datasources", content: ["preQueryScript", "postQueryScript"], extension: "java", code: "DS" }
+    "Html Template": { datasource: "RAHTMLTemplates", selects: ["templateCode", "templateUid"], name: "$HTML_Templates", content: "templateHtml", extension: "html", code: "HT" },
+    "Html Request": { datasource: "RAHTMLRequests", selects: ["uri", "requestUid"], name: "$HTML_Requests", content: "script", extension: "java", code: "HR" },
+    "Java Snippets": { datasource: "RaJavaSnippets", selects: ["name", "snippetUid"], name: "$Java_Snippets", content: "script", extension: "java", code: "JS" },
+    "Datasource Code": { datasource: "RaObjects", selects: ["objectName", "objectUid"], name: "$Datasources", content: ["preQueryScript", "postQueryScript"], extension: "java", code: "DS" }
 };
 var possibleExtensionType = ['js', 'html', 'data', 'json', 'css', 'java', 'ts'];
 var metaDataFileName = '.metaData.json';
@@ -128,7 +128,7 @@ function processData(sessionId, workspace, projectDetails, requestDetails, resul
 function getSelectedFileDSRow(filePath, workspace, callback) {
     var projectDetails = cs.getProjectDetails(workspace);
     var fileName = path.basename(filePath);
-    var arr = ["Get Html Template", "Get Java Snippets", "Get Html Request", "Get Datasource Code"];
+    var arr = ["Html Template", "Java Snippets", "Html Request", "Datasource Code"];
     var names = ["$HTML_Templates", "$Java_Snippets", "$HTML_Requests", "$Datasources"];
     var details;
     for (var i = 0; i < 4; i++) {
@@ -235,6 +235,10 @@ this.getSnippets = function (workspace, type) {
     var requestDetails = bindings[type];
     cs.getSessionId(url, projectDetails.username, projectDetails.password, function (sessionId) {
         cs.getGWTTemplates(url, sessionId, requestDetails, function (templates) {
+            if(templates === null){
+                cs.showInformationMessage("No " + type + " found!");
+                return;
+            }
             getSelection(templates, requestDetails.selects[0], function (selected) {
                 requestDetails.key = requestDetails.selects[1];
                 requestDetails.value = selected[requestDetails.key];

@@ -30,8 +30,12 @@ class cloudioService {
                         } else {
                             if (callback && callback != null) {
                                 callback(body);
+                                return;
                             }
                         }
+                    }
+                    if (callback && callback != null) {
+                        callback(null);
                     }
                 });
             });
@@ -81,6 +85,8 @@ class cloudioService {
         cs.cloudioApiCall(url + requestDetails.datasource, obj, function (r) {
             if (r.data && r.data.length > 0) {
                 callback(r.data);
+            } else {
+                callback(null);
             }
         });
     }
@@ -99,7 +105,6 @@ class cloudioService {
             }
         });
     }
-
     getPageMetaData(url, sessionId, pageId, callback) {
         var obj = {
             "sessionId": sessionId,
@@ -114,6 +119,8 @@ class cloudioService {
         cs.cloudioApiCall(url + "IOPagesDev", obj, function (r) {
             if (r.data && r.data.length > 0) {
                 callback(r.data);
+            } else {
+                callback(null);
             }
         });
     }
@@ -176,6 +183,10 @@ class cloudioService {
             });
             fs.rmdirSync(folderPath);
         }
+    }
+    getExactFilePath(fsPath) {
+        var p = fsPath.replace(fsPath.charAt(0), fsPath.charAt(0).toUpperCase());
+        return path.normalize(p);
     }
     createFile(content, folder, fileName) {
         var file = path.join(folder, fileName);

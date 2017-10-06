@@ -4,35 +4,38 @@ var fs = require('fs');
 var cs = require('./cloudioServices.js');
 var cloudioServices = cs.getServices();
 
+function createMetaFiles(data) {
+    cloudioServices.createFile(JSON.stringify(data, null, 4), data.projectFolder, "project.json");
+    var vsCodeFolder = cloudioServices.createFolder(data.projectFolder, ".vscode");
+    var excluseFiles = {
+        "files.exclude": {
+            "**/other.json": true,
+            "project.json": true,
+            "**/.metaData.json": true
+        }
+    }
+    cloudioServices.createFile(JSON.stringify(excluseFiles, null, 4), vsCodeFolder, "settings.json");
+}
+
+function openProjectFolder(data) {
+    cloudioServices.showInformationMessage("Project '" + data.projectName + "' is created successfully!");
+    vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.parse(data.projectFolder));
+}
+
 function createWorkspace(data) {
     cloudioServices.getSessionId(data.url, data.username, data.password, function (sessionId) {
+        data.projectFolder = cloudioServices.createFolder(data.workspace, data.projectName);
+        createMetaFiles(data);
         cloudioServices.getPageMetaData(data.url, sessionId, null, function (metaData) {
-            var projectName = data.projectName;
-            var folder = cloudioServices.createFolder(data.workspace, projectName);
-            if (folder === null) {
-                return;
+            if (metaData !== null) {
+                metaData.forEach(function (md) {
+                    cloudioServices.createPageFolder(md, cloudioServices.createFolder(data.projectFolder, md.pageCode));
+                });
+                openProjectFolder(data);
+            } else {
+                cloudioServices.showInformationMessage("No IO Pages found!");
+                openProjectFolder(data);
             }
-            data.projectFolder = folder;
-            var prjectFolder = data.projectFolder;
-            metaData.forEach(function (md) {
-                var pageCode = md.pageCode;
-                var folder = cloudioServices.createFolder(prjectFolder, pageCode);
-                if (folder !== null) {
-                    cloudioServices.createPageFolder(md, folder);
-                }
-            });
-            cloudioServices.createFile(JSON.stringify(data, null, 4), data.projectFolder, "project.json");
-            var vsCodeFolder = cloudioServices.createFolder(data.projectFolder, ".vscode");
-            var excluseFiles = {
-                "files.exclude": {
-                    "**/other.json": true,
-                    "project.json": true,
-                    "**/.metaData.json": true
-                }
-            }
-            cloudioServices.createFile(JSON.stringify(excluseFiles, null, 4), vsCodeFolder, "settings.json");
-            cloudioServices.showInformationMessage("Project '" + projectName + "' is created successfully!");
-            vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.parse(prjectFolder));
         });
     });
 }
@@ -74,6 +77,9 @@ this.getProject = function () {
                 projectDetails.url += '/';
             }
             projectDetails.url += "api/";
+            if (projectDetails.url.substr(0, 4) !== 'http') {
+                projectDetails.url = 'http://' + projectDetails.url;
+            }
             createWorkspace(projectDetails);
             return;
         }
