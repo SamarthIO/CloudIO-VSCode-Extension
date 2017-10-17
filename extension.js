@@ -10,14 +10,16 @@ var gwtObjects = require('./src/cloudioGWTServices.js');
 
 function activate(context) {
     var cs = cloudioServices.getServices();
-    var workspace = vscode.workspace.rootPath;
+    var workspace = cs.getExactFilePath(vscode.workspace.rootPath);
     vscode.workspace.onDidSaveTextDocument(function (event) {
         var fileName = event.fileName;
         if (cs.isProjectFile(fileName, workspace)) {
             if (cs.isGWTFile(fileName)) {
                 gwtObjects.save(fileName, workspace);
-            } else {
+            } else if (cs.isCloudioPage(fileName)) {
                 commitChanges.commit(fileName, workspace);
+            } else {
+                //
             }
         }
     }, null, context.subscriptions);
@@ -26,8 +28,10 @@ function activate(context) {
         if (cs.isProjectFile(fileName, workspace)) {
             if (cs.isGWTFile(fileName)) {
                 gwtObjects.sync(fileName, workspace);
-            } else {
+            } else if (cs.isCloudioPage(fileName)) {
                 syncFolder.sync(fileName, workspace);
+            } else {
+                //
             }
         }
     }, null, context.subscriptions);

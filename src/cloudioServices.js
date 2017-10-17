@@ -4,7 +4,7 @@ var fs = require('fs');
 var path = require('path');
 
 var SESSION_ID = undefined;
-
+var serverErrorMessage = "Server Error: ";
 class cloudioService {
     cloudioApiCall(url, data, callback) {
         vscode.window.withProgress({ location: vscode.ProgressLocation.Window, title: 'Processing...' }, function (progress) {
@@ -21,12 +21,12 @@ class cloudioService {
                 }, function (error, response, body) {
                     resolve();
                     if (error) {
-                        vscode.window.showErrorMessage(error.message);
+                        vscode.window.showErrorMessage(serverErrorMessage + error.message);
                     } else {
                         if (response.statusCode !== 200) {
-                            vscode.window.showErrorMessage(response.status + "  " + response.statusMessage);
+                            vscode.window.showErrorMessage(serverErrorMessage + " Status: " + response.status + " Message: " + response.statusMessage);
                         } else if (body.$error) {
-                            vscode.window.showErrorMessage(body.errorMessage);
+                            vscode.window.showErrorMessage(serverErrorMessage + "Error: " + body.errorMessage);
                         } else {
                             if (callback && callback != null) {
                                 callback(body);
@@ -45,8 +45,10 @@ class cloudioService {
         function signIn() {
             var obj = { "username": username, "password": password };
             cs.cloudioApiCall(url + "signin", obj, function (r) {
-                SESSION_ID = r.sessionId
-                callback(r.sessionId);
+                if (r && r !== null) {
+                    SESSION_ID = r.sessionId
+                    callback(r.sessionId);
+                }
             });
         }
         if (SESSION_ID) {
@@ -261,6 +263,15 @@ class cloudioService {
     }
     isGWTFile(fileName) {
         var names = ["$HTML_Templates", "$Java_Snippets", "$HTML_Requests", "$Datasources"];
+        for (var i = 0; i < 4; i++) {
+            if (fileName.indexOf(names[i]) !== -1) {
+                return true;
+            }
+        }
+        return false;
+    }
+    isCloudioPage(fileName) {
+        var names = ["controller.js", "templateHtml.html", "resolveJson.json", "details.json"];
         for (var i = 0; i < 4; i++) {
             if (fileName.indexOf(names[i]) !== -1) {
                 return true;

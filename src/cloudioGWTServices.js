@@ -3,12 +3,17 @@ var vscode = require('vscode');
 var path = require('path');
 var cs = cloudioServices.getServices();
 
-var bindings = {
+const bindings = {
     "Html Template": { datasource: "RAHTMLTemplates", selects: ["templateCode", "templateUid"], name: "$HTML_Templates", content: "templateHtml", extension: "html", code: "HT" },
     "Html Request": { datasource: "RAHTMLRequests", selects: ["uri", "requestUid"], name: "$HTML_Requests", content: "script", extension: "java", code: "HR" },
     "Java Snippets": { datasource: "RaJavaSnippets", selects: ["name", "snippetUid"], name: "$Java_Snippets", content: "script", extension: "java", code: "JS" },
     "Datasource Code": { datasource: "RaObjects", selects: ["objectName", "objectUid"], name: "$Datasources", content: ["preQueryScript", "postQueryScript"], extension: "java", code: "DS" }
 };
+
+function getBindings() {
+    return JSON.parse(JSON.stringify(bindings));
+}
+
 var possibleExtensionType = ['js', 'html', 'data', 'json', 'css', 'java', 'ts'];
 var metaDataFileName = '.metaData.json';
 
@@ -133,7 +138,8 @@ function getSelectedFileDSRow(filePath, workspace, callback) {
     var details;
     for (var i = 0; i < 4; i++) {
         if (filePath.indexOf(names[i]) !== -1) {
-            details = bindings[arr[i]];
+            var b = getBindings();
+            details = b[arr[i]];
             break;
         }
     }
@@ -209,6 +215,7 @@ this.save = function (filePath, workspace) {
         }
     });
 }
+
 this.sync = function (filePath, workspace) {
     getSelectedFileDSRow(filePath, workspace, function (details, projectDetails, result) {
         var newContent = cs.readFile(filePath);
@@ -232,10 +239,11 @@ this.sync = function (filePath, workspace) {
 this.getSnippets = function (workspace, type) {
     var projectDetails = cs.getProjectDetails(workspace);
     var url = projectDetails.url;
-    var requestDetails = bindings[type];
+    var b = getBindings();
+    var requestDetails = b[type];
     cs.getSessionId(url, projectDetails.username, projectDetails.password, function (sessionId) {
         cs.getGWTTemplates(url, sessionId, requestDetails, function (templates) {
-            if(templates === null){
+            if (templates === null) {
                 cs.showInformationMessage("No " + type + " found!");
                 return;
             }
